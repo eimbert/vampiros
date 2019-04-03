@@ -31,69 +31,44 @@ public class Juego implements Runnable {
 				newCol = new Random().nextInt(t.getNumColumnas());
 				newFil =  new Random().nextInt(t.getNumFilas());
 			}while(!ControlTablero.controlarSiPosionLibre(newCol, newFil, t));
-			personajes.add(new Personaje(new MovimientoAleatorio(newCol, newFil) , "V", 1));
+			personajes.add(new Personaje(new MovimientoAleatorio(newCol, newFil) , "V", TiposMovimiento.MOVIMIENTO_ALEATORIO));
 			t.posicionarEnTablero(personajes);
 		}
-		personajes.add(new Personaje(new MovimientoJugador(0,0), "@", 0));
+		personajes.add(new Personaje(new MovimientoJugador(0,0), "@", TiposMovimiento.MOVIMIENTO_JUGADOR));
 		t.posicionarEnTablero(personajes);
 	}
 
 	@Override
 	public void run() {
-		while(numVampiros > 0) {
-			System.out.println("" + numJugadas--);
+		while(numVampiros > 0 && numJugadas > 0) {
+			System.out.println("Jugadas pendientes:" + numJugadas-- + "\nvampiros:" + numVampiros);
 			System.out.println(t);
 			String movimiento = reader.nextLine();
 			moverPersonajes(movimiento); 
 			t.posicionarEnTablero(personajes);
 		}
+		if (numVampiros == 0)
+			System.out.println("You Win!!!");
+		else
+			System.out.println("You Lost :(");
 	}
 	
 	private void moverPersonajes(String movimiento) {
 		for(Personaje p: personajes) {
-			if (p.getTipoMovimiento() == 1) {
+			if (p.getTipoMovimiento() == TiposMovimiento.MOVIMIENTO_ALEATORIO) {
 				do {
 					p.mover(t.getNumColumnas(), t.getNumFilas());
 				}while(!ControlTablero.controlarSiPosionLibre(p.getCoordenadaX(), p.getCoordenadaY(), t));
 			}
 			else {
-				desglosarMovimiento(p, movimiento);
-				break;
+				int[] coordenadas =InputOutput.nuevasCoordenadas(p, movimiento, t.getNumColumnas(), t.getNumFilas());
+				p.mover(coordenadas[0], coordenadas[1]);
+				if (ControlTablero.comprobarColision(p.getCoordenadaX(), p.getCoordenadaY(), t)) {
+					numVampiros--;
+					personajes.remove(0);
+					break;
+				}
 			}
 		}
 	}
-	
-	private void desglosarMovimiento(Personaje  p, String movimiento) {
-		int columnaActual = p.getCoordenadaX();
-		int filaActual = p.getCoordenadaY();
-		char[] aux= new char[1];
-		for(int x = 0; x<movimiento.length(); x++) {
-			movimiento.getChars(x, x+1, aux, 0);
-			switch(aux[0]){
-			case 'a':
-				if(columnaActual > 0) columnaActual--;
-				break;
-			case 'd':
-				if(columnaActual < t.getNumColumnas()-1) columnaActual++;
-				break;
-			case 'w':
-				if(filaActual > 0 ) filaActual--;
-				break;
-			case 's':
-				if(filaActual < t.getNumFilas()-1) filaActual++;
-				break;
-			}
-		}
-		p.mover(columnaActual, filaActual);
-		//comprobarColision((Jugador)p);
-	}
-	
-	/*private void comprobarColision(Jugador j) {
-		if(!(t.getCharPosicion(j.getPosx(), j.getPosy()).equals("."))) {
-			//numVampiros--;
-			//personajes.remove(0);
-			if(numVampiros == 0) System.out.println("Ganaste");
-		}
-		
-	}*/
 }

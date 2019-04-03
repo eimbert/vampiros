@@ -49,6 +49,10 @@ public class Tablero {
 		return numColumnas;
 	}
 	
+	public void setReservarPosicion(int col, int fila) {
+		int posicion = numFilas * fila + col;
+		tablero.set(posicion, "x"); //reserva posicion
+	}
 	public String getCharPosicion(int col, int fila) {
 		int posicion = numFilas * fila + col;
 		return tablero.get(posicion);

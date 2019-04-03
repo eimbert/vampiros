@@ -3,12 +3,12 @@ package juegovamp;
 public class Personaje {
 	private ActoresJuego elemento; 
 	private String simbolo;
-	private int tipoMovimiento; //0 -> jugador; 1 -> Aleatorio
+	private TiposMovimiento tipoMovimiento;
 	
-	public Personaje(ActoresJuego a, String simbolo, int tipoMovimiento){
+	public Personaje(ActoresJuego a, String simbolo, TiposMovimiento movimiento){
 		this.elemento = a;
 		this.simbolo = simbolo;
-		this.tipoMovimiento = tipoMovimiento;
+		this.tipoMovimiento = movimiento;
 	}
 	
 	public void mover(int x, int y) {
@@ -31,12 +31,12 @@ public class Personaje {
 		this.simbolo = simbolo;
 	}
 
-	public int getTipoMovimiento() {
+	public TiposMovimiento getTipoMovimiento() {
 		return tipoMovimiento;
 	}
 
-	public void setTipoMovimiento(int tipoMovimiento) {
-		this.tipoMovimiento = tipoMovimiento;
+	public void setTipoMovimiento(TiposMovimiento tipo) {
+		this.tipoMovimiento = tipo;
 	}
 	
 	
