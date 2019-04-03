@@ -31,10 +31,10 @@ public class Juego implements Runnable {
 				newCol = new Random().nextInt(t.getNumColumnas());
 				newFil =  new Random().nextInt(t.getNumFilas());
 			}while(!ControlTablero.controlarSiPosionLibre(newCol, newFil, t));
-			personajes.add(new Vampiros(newCol, newFil , "V"));
+			personajes.add(new Personaje(new MovimientoAleatorio(newCol, newFil) , "V", 1));
 			t.posicionarEnTablero(personajes);
 		}
-		personajes.add(new Jugador(0,0, "@"));
+		personajes.add(new Personaje(new MovimientoJugador(0,0), "@", 0));
 		t.posicionarEnTablero(personajes);
 	}
 
@@ -51,21 +51,21 @@ public class Juego implements Runnable {
 	
 	private void moverPersonajes(String movimiento) {
 		for(Personaje p: personajes) {
-			if (p instanceof Vampiros) {
+			if (p.getTipoMovimiento() == 1) {
 				do {
 					p.mover(t.getNumColumnas(), t.getNumFilas());
-				}while(!ControlTablero.controlarSiPosionLibre(p.getPosx(), p.getPosy(), t));
+				}while(!ControlTablero.controlarSiPosionLibre(p.getCoordenadaX(), p.getCoordenadaY(), t));
 			}
 			else {
-				//desglosarMovimiento(p, movimiento);
+				desglosarMovimiento(p, movimiento);
 				break;
 			}
 		}
 	}
 	
 	private void desglosarMovimiento(Personaje  p, String movimiento) {
-		int columnaActual = p.getPosx();
-		int filaActual = p.getPosy();
+		int columnaActual = p.getCoordenadaX();
+		int filaActual = p.getCoordenadaY();
 		char[] aux= new char[1];
 		for(int x = 0; x<movimiento.length(); x++) {
 			movimiento.getChars(x, x+1, aux, 0);
@@ -85,15 +85,15 @@ public class Juego implements Runnable {
 			}
 		}
 		p.mover(columnaActual, filaActual);
-		comprobarColision((Jugador)p);
+		//comprobarColision((Jugador)p);
 	}
 	
-	private void comprobarColision(Jugador j) {
+	/*private void comprobarColision(Jugador j) {
 		if(!(t.getCharPosicion(j.getPosx(), j.getPosy()).equals("."))) {
 			//numVampiros--;
 			//personajes.remove(0);
 			if(numVampiros == 0) System.out.println("Ganaste");
 		}
 		
-	}
+	}*/
 }

@@ -20,7 +20,7 @@ public class Tablero {
 		tablero.clear();
 		nuevoTablero();
 		for(Personaje p: personajes) {
-			int posicion = numFilas * p.getPosy() + p.getPosx();
+			int posicion = numFilas * p.getCoordenadaY() + p.getCoordenadaX();
 			tablero.set(posicion, p.getSimbolo());
 		}
 	}

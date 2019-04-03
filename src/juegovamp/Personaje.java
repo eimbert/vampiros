@@ -1,16 +1,26 @@
 package juegovamp;
 
-public abstract class Personaje {
+public class Personaje {
+	private ActoresJuego elemento; 
 	private String simbolo;
-	private int posx;
-	private int posy;
+	private int tipoMovimiento; //0 -> jugador; 1 -> Aleatorio
 	
-	public abstract void mover(int newx, int newy);
-	
-	public Personaje(int posx, int posy, String simbolo){
-		this.posx = posx;
-		this.posy = posy;
+	public Personaje(ActoresJuego a, String simbolo, int tipoMovimiento){
+		this.elemento = a;
 		this.simbolo = simbolo;
+		this.tipoMovimiento = tipoMovimiento;
+	}
+	
+	public void mover(int x, int y) {
+		elemento.mover(x, y);
+	}
+	
+	public int getCoordenadaX(){
+		return elemento.getCoordenadaX();
+	}
+	
+	public int getCoordenadaY() {
+		return elemento.getCoordenadaY();
 	}
 
 	public String getSimbolo() {
@@ -21,20 +31,14 @@ public abstract class Personaje {
 		this.simbolo = simbolo;
 	}
 
-	public int getPosx() {
-		return posx;
+	public int getTipoMovimiento() {
+		return tipoMovimiento;
 	}
 
-	public void setPosx(int posx) {
-		this.posx = posx;
+	public void setTipoMovimiento(int tipoMovimiento) {
+		this.tipoMovimiento = tipoMovimiento;
 	}
-
-	public int getPosy() {
-		return posy;
-	}
-
-	public void setPosy(int posy) {
-		this.posy = posy;
-	}
+	
+	
 	
 }
